@@ -36,3 +36,15 @@ function leaveButton(name) {
     document.getElementById(name).classList.remove("Hovering");
     document.getElementById(name).style.cursor = "default";
 }
+
+function play() {
+    document.getElementById('videoElement').play();
+    document.getElementById('playButton').style.display = 'none';
+    document.getElementById('pauseButton').style.display = 'block';
+}
+
+function pause() {
+    document.getElementById('videoElement').pause();
+    document.getElementById('playButton').style.display = 'block';
+    document.getElementById('pauseButton').style.display = 'none';
+}
