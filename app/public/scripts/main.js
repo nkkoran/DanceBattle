@@ -1,5 +1,22 @@
+var canvas;
+var ctx;
+var x;
+var poseNet;
+let camera;
+var camPoses;
+
+
+function init() {
+	canvas = document.getElementById("poseCanvas");
+	ctx = canvas.getContext("2d");
+	ctx.fillStyle = "#000000";
+    //ctx.fillRect(0, 0, 300, 600);
+    camera = document.querySelector("#liveCamera");
+}
+
 function startCamera() {
-    var video = document.querySelector("#liveCamera");
+    
+	let video = camera;
 
     if (navigator.mediaDevices.getUserMedia) {
       navigator.mediaDevices.getUserMedia({ video: true })
@@ -10,10 +27,29 @@ function startCamera() {
           console.log("Something went wrong!");
         });
     }
+
+    poseNet = ml5.poseNet(video, () => {
+    	console.log('Model loaded');
+    });
+
+	poseNet.on('pose', (results) => {
+  		camPoses = results;
+	});
+
+	ctx.fillStyle = '#FFFFFF';
+	setInterval(draw, 10);
 }
 
+function draw() {
+	if(typeof camPoses !== 'undefined') {
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		ctx.fillRect(500-camPoses[0].pose.nose.x-5, camPoses[0].pose.nose.y-5, 10, 10);
+	}
+}
+
+
 function stopCamera() {
-      var video = document.querySelector("#liveCamera");
+      let video = camera;
 
       var stream = video.srcObject;
       var tracks = stream.getTracks();
