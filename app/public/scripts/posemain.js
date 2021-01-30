@@ -2,11 +2,9 @@ var net, joints1 = [], joints2 = [], weights1 = [], weights2 = [];
 
 async function loadModel() {
   net = await posenet.load({
-      architecture: 'MobileNetV1',
+      architecture: 'ResNet50',
       outputStride: 16,
-      inputResolution: { width: 100, height: 80 },
-      multiplier: 0.5,
-      quantBytes: 1
+      quantBytes: 4
   });
 }
 
@@ -37,11 +35,19 @@ async function getJoints(img1, img2) {
 }
 }
 
-async function compare1() {
-    console.log(similarity(joints1, joints2));
+async function compare1(temp1, temp2) {
+    for (let i = 0; i < joints1.length; ++i) {
+        joints1[i] /= l2norm(joints1);
+        joints2[i] /= l2norm(joints2);
+    }
+    console.log(temp1 + " " + temp2 + ": " + similarity(joints1, joints2));
 }
 
-async function compare2() {
+async function compare2(temp1, temp2) {
+    for (let i = 0; i < joints1.length; ++i) {
+        joints1[i] /= l2norm(joints1);
+        joints2[i] /= l2norm(joints2);
+    }
     let sumW = 0, res = 0;
     for (let i = 0; i < weights1.length; ++i) {
         sumW += weights1[i];
@@ -52,23 +58,37 @@ async function compare2() {
     for (let i = 0; i < joints1.length / 2; ++i) {
         res += (weights1[i] + weights2[i]) * (Math.abs(joints1[2*i] - joints2[2*i]) + Math.abs(joints1[2*i+1] - joints2[2*i+1]));
     }
-    console.log(1 / sumW * res)
+    console.log(1 - 1 / sumW * res)
+}
+
+async function compare3(temp1, temp2) {
+    console.log(similarity(joints1, joints2));
 }
 
 async function testy() {
-    let a = document.getElementById("stand");
-    let b = document.getElementById("man");
-    await getJoints(a, b);
-    console.log(l2norm(joints1));
-    console.log(l2norm(joints2));
-    for (let i = 0; i < joints1.length; ++i) {
-        joints1[i] /= l2norm(joints1);
-        joints2[i] /= l2norm(joints2);
+    tl = ["A", "J", "T"];
+    tn = ["1", "2", "3", "4"];
+    testyy = [];
+    for (let i = 0; i < tl.length; ++i) {
+        for (let j = 0; j < tn.length; ++j) {
+            testyy.push(tl[i] + tl[i] + "_" + tn[j] + ".png");
+        }
     }
-    console.log(joints1);
-    console.log(joints2);
-    compare1();
-    // compare2();
+    for (let i = 0; i < testyy.length; ++i) {
+        for (let j = 0; j < testyy.length; ++j) {
+            let a = document.getElementById(testyy[i]);
+            let b = document.getElementById(testyy[j]);
+            await getJoints(a, b);
+
+            compare1(testyy[i], testyy[j]);
+            // compare2(testyy[i], testyy[j]);
+            // compare3(testyy[i], testyy[j]);
+        }
+    }
+    // console.log(l2norm(joints1));
+    // console.log(l2norm(joints2));
+    // console.log(joints1);
+    // console.log(joints2);
 }
 
 function partial(fn, j) {
