@@ -1,0 +1,51 @@
+<!doctype html>
+<html dir="ltr" lang="en">
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="scripts/main.js"></script>
+        <link rel="stylesheet" href="style.css">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200&display=swap" rel="stylesheet">
+    </head>
+    <body>
+
+        <div class="page">
+            <ul>
+                <li class="mainBody">
+                    <div id = 'left'>
+                        <video muted loop style="height: 600px" id="videoElement">
+                            <source src="Lol.MP4" type="video/mp4">
+                        </video>
+                        <button onclick="document.getElementById('videoElement').play();" style="display: block; margin:auto;">
+                            Start video
+                        </button>
+                    </div>
+                </li>
+
+                <li class="mainBody">
+                    <div id='center'>
+                        <canvas id="poseCanvas" width="150px" height="150px" style='border:1px solid black;'>
+                        </canvas>
+                    </div>
+                </li>
+                <li class="mainBody" style="overflow: hidden">
+                    <div id='right' style="width: 300px">
+                        <video class="live" autoplay="true" id="liveCamera" style="display: block; width: 700px;height: 600px; transform: translateX(-200px) rotateY(180deg);"></video>
+                        <div>
+                            <button onclick="startCamera();" >Start video</button>
+                            <button onclick="stopCamera(); ">Stop video</button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div id="menubar" class="menu">
+            <ul style="align-content: center">
+                <img src="" class="menu"></li>
+                <li id='upload-video' onmouseover="hoveringOnButton('upload-video')" onmouseout="leaveButton('upload-video')" class="menu">Upload Video</li>
+                <li class="menu">Option b</li>
+                <li class="menu">Option c</li>
+            </ul>
+        </div>
+    </body>
+</html>
