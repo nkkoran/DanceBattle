@@ -2,33 +2,31 @@ var net, joints1 = [], joints2 = [], weights1 = [], weights2 = [];
 
 async function loadModel() {
   net = await posenet.load({
-  architecture: 'MobileNetV1',
-  outputStride: 16,
-  inputResolution: { width: 100, height: 80 },
-  multiplier: 0.5,
-  quantBytes: 1
+      architecture: 'MobileNetV1',
+      outputStride: 16,
+      inputResolution: { width: 100, height: 80 },
+      multiplier: 0.5,
+      quantBytes: 1
   });
 }
 
 async function runModel(img) {
     const pose = await net.estimateSinglePose(img, {
       flipHorizontal: false
-    });
+  });
     return pose;
 }
 
 function time(fu, args) {
-  const t0 = performance.now();
-  fu(args);
-  const t1 = performance.now();
-  console.log(t1 - t0 + "milliseconds");
+    const t0 = performance.now();
+    fu(args);
+    const t1 = performance.now();
+    console.log(t1 - t0 + "milliseconds");
 }
 
 async function getJoints(img1, img2) {
   model1 = await runModel(img1);
   model2 = await runModel(img2);
-  console.log(model1);
-  console.log(model2);
   for (let i = 0; i < 17; ++i) {
     joints1[2 * i] = model1["keypoints"][i]["position"]["x"];
     joints1[2 * i + 1] = model1["keypoints"][i]["position"]["y"];
@@ -36,27 +34,47 @@ async function getJoints(img1, img2) {
     joints2[2 * i + 1] = model2["keypoints"][i]["position"]["y"];
     weights1[i] = model1["keypoints"][i]["score"];
     weights2[i] = model2["keypoints"][i]["score"];
-    console.log(joints1);
-  }
+}
 }
 
-async function compare() {
-  console.log(similarity(joints1, joints2));
+async function compare1() {
+    console.log(similarity(joints1, joints2));
+}
+
+async function compare2() {
+    let sumW = 0, res = 0;
+    for (let i = 0; i < weights1.length; ++i) {
+        sumW += weights1[i];
+    }
+    for (let i = 0; i < weights2.length; ++i) {
+        sumW += weights2[i];
+    }
+    for (let i = 0; i < joints1.length / 2; ++i) {
+        res += (weights1[i] + weights2[i]) * (Math.abs(joints1[2*i] - joints2[2*i]) + Math.abs(joints1[2*i+1] - joints2[2*i+1]));
+    }
+    console.log(1 / sumW * res)
 }
 
 async function testy() {
-  let a = document.getElementById("stand");
-  let b = document.getElementById("man");
-  await getJoints(a, b);
-  console.log(joints1);
-  console.log(joints2);
-  compare();
+    let a = document.getElementById("stand");
+    let b = document.getElementById("man");
+    await getJoints(a, b);
+    console.log(l2norm(joints1));
+    console.log(l2norm(joints2));
+    for (let i = 0; i < joints1.length; ++i) {
+        joints1[i] /= l2norm(joints1);
+        joints2[i] /= l2norm(joints2);
+    }
+    console.log(joints1);
+    console.log(joints2);
+    compare1();
+    // compare2();
 }
 
 function partial(fn, j) {
-return function accessor(d, i) {
-return fn(d, i, j);
-};
+    return function accessor(d, i) {
+        return fn(d, i, j);
+    };
 } // end FUNCTION partial()
 
 similarity = function(x, y, clbk) {
@@ -103,8 +121,8 @@ function dot(x, y, clbk) {
         }
     }
     var len = x.length,
-        sum = 0,
-        i;
+    sum = 0,
+    i;
 
     if (len !== y.length) {
         throw new Error('dot()::invalid input argument. Arrays must be of equal length.');
@@ -134,12 +152,12 @@ function l2norm(arr, clbk) {
         }
     }
     var len = arr.length,
-        t = 0,
-        s = 1,
-        r,
-        val,
-        abs,
-        i;
+    t = 0,
+    s = 1,
+    r,
+    val,
+    abs,
+    i;
 
     if (!len) {
         return null;
@@ -185,5 +203,3 @@ function isArray(value) {
 function isFunction(value) {
     return (typeof value === 'function');
 } // end FUNCTION isFunction()
-
-console.log(similarity([1, 2], [4, 5]));
