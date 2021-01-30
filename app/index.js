@@ -5,14 +5,20 @@ var bodyParser = require('body-parser');
 var app = express();
 var router = express.Router();
 
-app.use(express.static(__dirname));
+
+app.use(express.static('public'));
+//app.engine('html', require('ejs').renderFile);
 
 app.get('/', function(req, res) {
+  res.render('index2.html');
+});
+
+app.get('/ui', function(req, res) {
   res.render('index.html');
 });
 
-app.get('/stand.png', function(req, res) {
-  res.render('stand.jpg');
+app.get('/algo', function(req, res) {
+  res.render('index2.html');
 });
 
 app.listen(3000);

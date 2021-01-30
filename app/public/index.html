@@ -1,0 +1,26 @@
+<!doctype html>
+<html dir="ltr" lang="en">
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        
+        <script src="scripts/posemain.js"></script>
+
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200&display=swap" rel="stylesheet">
+
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/posenet"></script>
+    </head>
+    <body onload='loadModel()'>
+    <div id="menubar" class="menu" style="position:sticky;">
+        <img id='stand' src='assets/stand.jpg' crossorigin="anonymous"/>
+        <img id='man' src='assets/man.jpg' crossorigin="anonymous"/>
+    </div>
+    <button id='button1' onclick="testy();">Analyze</button>
+
+    <div id="posedata">
+        Pose data here!
+    </div>
+
+    </body>
+</html>
