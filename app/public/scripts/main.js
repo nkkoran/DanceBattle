@@ -33,7 +33,7 @@ function init() {
         refPoses = results;
     });
 
-    ctx.fillStyle = '#FFFFFF';
+    //ctx.fillStyle = '#FFFFFF';
     setInterval(draw, 10);
     setInterval(liveScore, 1500);
 }
@@ -69,6 +69,7 @@ function drawLine(x1, y1, x2, y2, offset) {
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     if(typeof refPoses !== 'undefined') {
+        ctx.fillStyle='#00FF00'
         drawKeypoints(refPoses, 0);
         drawSkeleton(refPoses,0 );
     }
@@ -129,6 +130,7 @@ function draw() {
             drawLine(camPoses[0].pose.rightElbow.x, camPoses[0].pose.rightElbow.y, camPoses[0].pose.rightWrist.x, camPoses[0].pose.rightWrist.y);
         }
         */
+        ctx.fillStyle='#FF0000';
         drawKeypoints(camPoses, 500);
         drawSkeleton(camPoses, 500);
 	}
