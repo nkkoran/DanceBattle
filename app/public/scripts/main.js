@@ -226,3 +226,12 @@ function poseToJW(model) {
     //console.log(model.pose.keypoints);
     return joints.concat(weights);
 }
+
+function loadVideo() {
+    var fileInput = document.getElementById('myfile');
+    var video = document.getElementById('videoElement');
+
+    var fileUrl = window.URL.createObjectURL(fileInput.files[0]);
+
+    video.src = fileUrl;
+}
