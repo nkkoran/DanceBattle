@@ -154,7 +154,11 @@ async function testy() {
     // jwl2 = hehe.slice(5, 10);
     // let d = dtw(jwl1, jwl2, compare);
     // console.log(d);
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> parent of 3515d72... Merge 1
     let a = document.getElementById("AA_7.png");
     let jwa = await getJW(a);
     let b = document.getElementById("AA_8.png");
