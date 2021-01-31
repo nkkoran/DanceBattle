@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="85c7be31-ba7e-46b4-a770-39a6423d1f55" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/app/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/public/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/public/scripts/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/public/scripts/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/public/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/public/style.css" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="nkkoran &lt;nicholaskoran19@yahoo.com&gt;" />
+        <option value="nkkoran &lt;50963438+nkkoran@users.noreply.github.com&gt;" />
+      </list>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1nnuXdGEjzBRkbJzv1PHiVueXib" />
+  <component name="ProjectViewState">
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/public/assets" />
+      <recent name="$PROJECT_DIR$/src" />
+      <recent name="$PROJECT_DIR$/src/assets" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="85c7be31-ba7e-46b4-a770-39a6423d1f55" name="Default Changelist" comment="" />
+      <created>1612038217039</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1612038217039</updated>
+      <workItem from="1612038219391" duration="5484000" />
+      <workItem from="1612049727135" duration="9292000" />
+    </task>
+    <task id="LOCAL-00001" summary="This might be helpful">
+      <created>1612038694034</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1612038694034</updated>
+    </task>
+    <task id="LOCAL-00002" summary="This might be helpful">
+      <created>1612039379903</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1612039379904</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Added play pause button">
+      <created>1612042552922</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1612042552922</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Removed button outline">
+      <created>1612042712379</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1612042712379</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Large change- much better body part tracking and drawing for both video and live feed.">
+      <created>1612054872739</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1612054872739</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="This might be helpful" />
+    <MESSAGE value="Added play pause button" />
+    <MESSAGE value="Removed button outline" />
+    <MESSAGE value="Large change- much better body part tracking and drawing for both video and live feed." />
+    <option name="LAST_COMMIT_MESSAGE" value="Large change- much better body part tracking and drawing for both video and live feed." />
+  </component>
+</project>
