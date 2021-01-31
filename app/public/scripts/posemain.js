@@ -1,5 +1,6 @@
 var net;
 var customWeights = [ 5 , 1 , 1 , 1 , 1 , 3 , 3 , 8 , 8 , 10 , 10 , 6 , 6 , 0 , 0 , 0 , 0]
+var threshold = 0.4;
 
 // 0   nose
 // 1   leftEye
@@ -63,42 +64,63 @@ async function getJW(img) {
 }
 
 function compare1(jw1, jw2) {
-    joints1 = jw1.slice(0, 34);
-    joints2 = jw2.slice(0, 34);
-    for (let i = 0; i < joints1.length; ++i) {
-        joints1[i] /= l2norm(joints1);
-        joints2[i] /= l2norm(joints2);
+    let newJ1 = [], newJ2 = [];
+    for (int i = 34; i < 51; ++i) {
+        if (jw1[i] > threshold && jw[i] > threshold) {
+            newJ1.push(jw1[(i - 34) * 2]);
+            newJ1.push(jw1[(i - 34) * 2] + 1);
+            newJ2.push(jw2[(i - 34) * 2]);
+            newJ2.push(jw2[(i - 34) * 2] + 1);
+        }
     }
-    return similarity(joints1, joints2);
+    for (let i = 0; i < newJ1.length; ++i) {
+        newJ1[i] /= l2norm(newJ1);
+        newJ1[i] /= l2norm(newJ2);
+    }
+    return similarity(newJ1, newJ2);
 }
 
 function compare2(jw1, jw2) {
-    joints1 = jw1.slice(0, 34);
-    joints2 = jw2.slice(0, 34);
-    weights1 = jw1.slice(34, 51);
-    weights2 = jw2.slice(34, 51);
+    let newJ1 = [], newJ2 = [], newW1 = [], newW2 = [];
+    for (let i = 34; i < 51; ++i) {
+        if (jw1[i] > threshold && jw[i] > threshold) {
+            newJ1.push(jw1[(i - 34) * 2]);
+            newJ1.push(jw1[(i - 34) * 2] + 1);
+            newJ2.push(jw2[(i - 34) * 2]);
+            newJ2.push(jw2[(i - 34) * 2] + 1);
+            newW1.push(jw1[i]);
+            newW2.push(jw2[i]);
+        }
+    }
     normalizeCustomWeights();
-    for (let i = 0; i < joints1.length; ++i) {
-        joints1[i] /= l2norm(joints1);
-        joints2[i] /= l2norm(joints2);
+    for (let i = 0; i < newJ1.length; ++i) {
+        newJ1[i] /= l2norm(newJ1);
+        newJ2[i] /= l2norm(newJ2);
     }
     let sumW = 0, res = 0;
-    for (let i = 0; i < weights1.length; ++i) {
-        sumW += weights1[i];
+    for (let i = 0; i < newW1.length; ++i) {
+        sumW += newW1[i];
     }
-    for (let i = 0; i < weights2.length; ++i) {
-        sumW += weights2[i];
+    for (let i = 0; i < newW2.length; ++i) {
+        sumW += newW2[i];
     }
-    for (let i = 0; i < joints1.length / 2; ++i) {
-        res += customWeights[i] * (weights1[i] + weights2[i]) * (Math.abs(joints1[2*i] - joints2[2*i]) + Math.abs(joints1[2*i+1] - joints2[2*i+1]));
+    for (let i = 0; i < newJ1.length / 2; ++i) {
+        res += customWeights[i] * (newW1[i] + newW2[i]) * (Math.abs(newJ1[2*i] - newJ2[2*i]) + Math.abs(newJ1[2*i+1] - newJ2[2*i+1]));
     }
     return 1 - 1 / sumW * res;
 }
 
 function compare3(jw1, jw2) {
-    joints1 = jw1.slice(0, 34);
-    joints2 = jw2.slice(0, 34);
-    return similarity(joints1, joints2);
+    let newJ1 = [], newJ2 = [];
+    for (int i = 34; i < 51; ++i) {
+        if (jw1[i] > threshold && jw[i] > threshold) {
+            newJ1.push(jw1[(i - 34) * 2]);
+            newJ1.push(jw1[(i - 34) * 2] + 1);
+            newJ2.push(jw2[(i - 34) * 2]);
+            newJ2.push(jw2[(i - 34) * 2] + 1);
+        }
+    }
+    return similarity(newJ1, newJ2);
 }
 
 function dtw(jwl1, jwl2, comp) {
@@ -106,6 +128,13 @@ function dtw(jwl1, jwl2, comp) {
     let dtw = new DynamicTimeWarping(jwl1, jwl2, comp);
     return dtw.getDistance();
 }
+
+function linScale(x, m, b) {
+    return m * x + b;
+    //mean, standard deviation
+}
+
+
 
 async function testy() {
     // tl = ["A", "J", "T"];
@@ -125,6 +154,14 @@ async function testy() {
     // jwl2 = hehe.slice(5, 10);
     // let d = dtw(jwl1, jwl2, compare);
     // console.log(d);
+
+    let a = document.getElementById("AA_7.png");
+    let jwa = await getJW(a);
+    let b = document.getElementById("AA_8.png");
+    let jwb = await getJW(b);
+    console.log(jwa);
+    console.log(jwb);
+    console.log(compare2(jwa, jwb));
     
     // let a = document.getElementById("AA_7.png");
     // let jwa = await getJW(a);
