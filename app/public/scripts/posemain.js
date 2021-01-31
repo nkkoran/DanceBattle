@@ -126,13 +126,13 @@ async function testy() {
     // let d = dtw(jwl1, jwl2, compare);
     // console.log(d);
     
-    let a = document.getElementById("AA_7.png");
-    let jwa = await getJW(a);
-    let b = document.getElementById("AA_8.png");
-    let jwb = await getJW(b);
-    console.log(jwa);
-    console.log(jwb);
-    console.log(compare2(jwa, jwb));
+    // let a = document.getElementById("AA_7.png");
+    // let jwa = await getJW(a);
+    // let b = document.getElementById("AA_8.png");
+    // let jwb = await getJW(b);
+    // console.log(jwa);
+    // console.log(jwb);
+    // console.log(compare2(jwa, jwb));
 }
 
 function partial(fn, j) {

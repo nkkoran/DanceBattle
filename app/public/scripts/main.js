@@ -1,6 +1,5 @@
 var canvas;
 var ctx;
-var x;
 var poseNet;
 let camera;
 let referenceVideo;
@@ -36,8 +35,7 @@ function init() {
 
     ctx.fillStyle = '#FFFFFF';
     setInterval(draw, 10);
-    setInterval(liveScore(refPoses, camPoses), 10)
-
+    setInterval(liveScore, 1500);
 }
 
 function startCamera() {
@@ -204,10 +202,25 @@ function pause() {
     referenceVideo = document.querySelector("#videoElement");
 }
 
-function liveScore(pose1, pose2) {
+function liveScore() {
     let score;
-    if(pose1 !== 'undefined'&& pose2 !== 'undefined') {
-        score=compare1(pose1, pose2);
-        document.getElementById('score').innerText = score;
+    if(typeof refPoses !== 'undefined' && typeof camPoses !== 'undefined') {
+        if (typeof refPoses[0] !== 'undefined' && typeof camPoses[0] !== 'undefined') {
+            score=compare3(poseToJW(refPoses[0]), poseToJW(camPoses[0]));
+            document.getElementById('score').innerText = score;
+        }
     }
+}
+
+
+function poseToJW(model) {
+    let joints = [], weights = [];
+    
+    for (let i = 0; i < 17; ++i) {
+        joints[2 * i] = model.pose.keypoints[i].position.x;
+        joints[2 * i + 1] = model.pose.keypoints[i].position.y;
+        weights[i] = model.pose.keypoints[i].score;
+    }
+    //console.log(model.pose.keypoints);
+    return joints.concat(weights);
 }
