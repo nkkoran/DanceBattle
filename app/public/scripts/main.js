@@ -35,7 +35,7 @@ function init() {
 
     //ctx.fillStyle = '#FFFFFF';
     setInterval(draw, 10);
-    setInterval(liveScore, 1500);
+    setInterval(liveScore, 500);
 }
 
 function startCamera() {
@@ -75,61 +75,6 @@ function draw() {
     }
 
 	if(typeof camPoses !== 'undefined') {
-		/*
-		if (camPoses[0].pose.nose.confidence > confidenceLevel) {
-            ctx.fillRect(500-camPoses[0].pose.nose.x, camPoses[0].pose.nose.y, 10, 10);
-        }
-
-        if (camPoses[0].pose.leftShoulder.confidence > confidenceLevel) {
-            ctx.fillRect(500-camPoses[0].pose.leftShoulder.x, camPoses[0].pose.leftShoulder.y, 10, 10);
-        }
-
-        if (camPoses[0].pose.rightShoulder.confidence > confidenceLevel) {
-            ctx.fillRect(500-camPoses[0].pose.rightShoulder.x, camPoses[0].pose.rightShoulder.y, 10, 10);
-        }
-
-        if (camPoses[0].pose.leftElbow.confidence > confidenceLevel) {
-            ctx.fillRect(500-camPoses[0].pose.leftElbow.x, camPoses[0].pose.leftElbow.y, 10, 10);
-        }
-
-        if (camPoses[0].pose.rightElbow.confidence > confidenceLevel) {
-            ctx.fillRect(500-camPoses[0].pose.rightElbow.x, camPoses[0].pose.rightElbow.y, 10, 10);
-        }
-
-        if (camPoses[0].pose.leftWrist.confidence > confidenceLevel) {
-            ctx.fillRect(500-camPoses[0].pose.leftWrist.x, camPoses[0].pose.leftWrist.y, 10, 10);
-        }
-
-        if (camPoses[0].pose.rightWrist.confidence > confidenceLevel) {
-            ctx.fillRect(500-camPoses[0].pose.rightWrist.x, camPoses[0].pose.rightWrist.y, 10, 10);
-        }
-
-        if (camPoses[0].pose.leftHip.confidence > confidenceLevel) {
-            ctx.fillRect(500-camPoses[0].pose.leftHip.x, camPoses[0].pose.leftHip.y, 10, 10);
-        }
-
-        if (camPoses[0].pose.rightHip.confidence > confidenceLevel) {
-            ctx.fillRect(500-camPoses[0].pose.rightHip.x, camPoses[0].pose.rightHip.y, 10, 10);
-        }
-
-        //Lines
-        if (camPoses[0].pose.leftShoulder.confidence > confidenceLevel && camPoses[0].pose.rightShoulder.confidence > confidenceLevel) {
-            var midShoulder = [(camPoses[0].pose.rightShoulder.x + camPoses[0].pose.leftShoulder.x)/2, (camPoses[0].pose.rightShoulder.y + camPoses[0].pose.leftShoulder.y)/2];
-            drawLine(midShoulder[0],midShoulder[1],camPoses[0].pose.leftShoulder.x,camPoses[0].pose.leftShoulder.y);
-            drawLine(midShoulder[0],midShoulder[1],camPoses[0].pose.rightShoulder.x,camPoses[0].pose.rightShoulder.y);
-            if (camPoses[0].pose.nose.confidence > confidenceLevel) {
-                drawLine(midShoulder[0],midShoulder[1],camPoses[0].pose.nose.x,camPoses[0].pose.nose.y);
-            }
-        }
-
-        if (camPoses[0].pose.leftElbow.confidence > confidenceLevel && camPoses[0].pose.leftWrist.confidence > confidenceLevel) {
-            drawLine(camPoses[0].pose.leftElbow.x, camPoses[0].pose.leftElbow.y, camPoses[0].pose.leftWrist.x, camPoses[0].pose.leftWrist.y);
-        }
-
-        if (camPoses[0].pose.rightElbow.confidence > confidenceLevel && camPoses[0].pose.rightWrist.confidence > confidenceLevel) {
-            drawLine(camPoses[0].pose.rightElbow.x, camPoses[0].pose.rightElbow.y, camPoses[0].pose.rightWrist.x, camPoses[0].pose.rightWrist.y);
-        }
-        */
         ctx.fillStyle='#FF0000';
         drawKeypoints(camPoses, 500);
         drawSkeleton(camPoses, 500);
@@ -209,6 +154,8 @@ function liveScore() {
     if(typeof refPoses !== 'undefined' && typeof camPoses !== 'undefined') {
         if (typeof refPoses[0] !== 'undefined' && typeof camPoses[0] !== 'undefined') {
             score=compare3(poseToJW(refPoses[0]), poseToJW(camPoses[0]));
+            score = scaleScore(score);
+            score = Math.round(score*1000)/10;
             document.getElementById('score').innerText = score;
         }
     }
@@ -225,6 +172,10 @@ function poseToJW(model) {
     }
     //console.log(model.pose.keypoints);
     return joints.concat(weights);
+}
+
+function scaleScore(score) {
+    return (Math.pow(30,score)-1)/29;
 }
 
 function loadVideo() {

@@ -65,7 +65,7 @@ async function getJW(img) {
 
 function compare1(jw1, jw2) {
     let newJ1 = [], newJ2 = [];
-    for (int i = 34; i < 51; ++i) {
+    for (let i = 34; i < 51; ++i) {
         if (jw1[i] > threshold && jw[i] > threshold) {
             newJ1.push(jw1[(i - 34) * 2]);
             newJ1.push(jw1[(i - 34) * 2] + 1);
@@ -83,7 +83,7 @@ function compare1(jw1, jw2) {
 function compare2(jw1, jw2) {
     let newJ1 = [], newJ2 = [], newW1 = [], newW2 = [];
     for (let i = 34; i < 51; ++i) {
-        if (jw1[i] > threshold && jw[i] > threshold) {
+        if (jw1[i] > threshold && jw2[i] > threshold) {
             newJ1.push(jw1[(i - 34) * 2]);
             newJ1.push(jw1[(i - 34) * 2] + 1);
             newJ2.push(jw2[(i - 34) * 2]);
@@ -112,8 +112,8 @@ function compare2(jw1, jw2) {
 
 function compare3(jw1, jw2) {
     let newJ1 = [], newJ2 = [];
-    for (int i = 34; i < 51; ++i) {
-        if (jw1[i] > threshold && jw[i] > threshold) {
+    for (let i = 34; i < 51; ++i) {
+        if (jw1[i] > threshold && jw2[i] > threshold) {
             newJ1.push(jw1[(i - 34) * 2]);
             newJ1.push(jw1[(i - 34) * 2] + 1);
             newJ2.push(jw2[(i - 34) * 2]);
