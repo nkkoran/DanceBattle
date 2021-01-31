@@ -66,7 +66,7 @@ async function getJW(img) {
 function compare1(jw1, jw2) {
     let newJ1 = [], newJ2 = [];
     for (let i = 34; i < 51; ++i) {
-        if (jw1[i] > threshold && jw[i] > threshold) {
+        if (jw1[i] > threshold && jw2[i] > threshold) {
             newJ1.push(jw1[(i - 34) * 2]);
             newJ1.push(jw1[(i - 34) * 2] + 1);
             newJ2.push(jw2[(i - 34) * 2]);
@@ -77,7 +77,7 @@ function compare1(jw1, jw2) {
         newJ1[i] /= l2norm(newJ1);
         newJ1[i] /= l2norm(newJ2);
     }
-    return similarity(newJ1, newJ2);
+    return Math.sqrt(2 - 2 * similarity(newJ1, newJ2));
 }
 
 function compare2(jw1, jw2) {
@@ -121,6 +121,36 @@ function compare3(jw1, jw2) {
         }
     }
     return similarity(newJ1, newJ2);
+}
+
+function compare4(jw1, jw2) {
+    let newJ1 = [], newJ2 = [], newW1 = [], newW2 = [];
+    for (let i = 34; i < 51; ++i) {
+        if (jw1[i] > threshold && jw2[i] > threshold) {
+            newJ1.push(jw1[(i - 34) * 2]);
+            newJ1.push(jw1[(i - 34) * 2] + 1);
+            newJ2.push(jw2[(i - 34) * 2]);
+            newJ2.push(jw2[(i - 34) * 2] + 1);
+            newW1.push(jw1[i]);
+            newW2.push(jw2[i]);
+        }
+    }
+    normalizeCustomWeights();
+    for (let i = 0; i < newJ1.length; ++i) {
+        newJ1[i] /= l2norm(newJ1);
+        newJ2[i] /= l2norm(newJ2);
+    }
+    let sumW = 0, res = 0;
+    for (let i = 0; i < newW1.length; ++i) {
+        sumW += newW1[i];
+    }
+    for (let i = 0; i < newW2.length; ++i) {
+        sumW += newW2[i];
+    }
+    for (let i = 0; i < newJ1.length / 2; ++i) {
+        res += customWeights[i] * (newW1[i] + newW2[i]) * (Math.abs(newJ1[2*i] - newJ2[2*i]) + Math.abs(newJ1[2*i+1] - newJ2[2*i+1]));
+    }
+    return 1 - 1 / sumW * res;
 }
 
 function dtw(jwl1, jwl2, comp) {

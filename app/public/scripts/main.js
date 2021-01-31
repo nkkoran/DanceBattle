@@ -35,7 +35,7 @@ function init() {
 
     //ctx.fillStyle = '#FFFFFF';
     setInterval(draw, 10);
-    setInterval(liveScore, 500);
+    setInterval(liveScore, 250);
 }
 
 function startCamera() {
@@ -156,6 +156,7 @@ function liveScore() {
             score=compare3(poseToJW(refPoses[0]), poseToJW(camPoses[0]));
             score = scaleScore(score);
             score = Math.round(score*1000)/10;
+            console.log(score);
             document.getElementById('score').innerText = score;
         }
     }
