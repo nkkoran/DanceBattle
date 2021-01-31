@@ -6,6 +6,7 @@ let camera;
 let referenceVideo;
 var camPoses;
 var refPoses;
+var threshold = 0.4;
 
 
 function init() {
@@ -17,13 +18,25 @@ function init() {
     camera = document.querySelector("#liveCamera");
 
 
-    poseNet1 = ml5.poseNet(camera, () => {
+    poseNet1 = ml5.poseNet(camera, "single", () => {
         console.log('Model1 loaded');
     });
 
-    poseNet2 = ml5.poseNet(referenceVideo, () => {
+    poseNet2 = ml5.poseNet(referenceVideo, "single", () => {
         console.log('Model2 loaded');
     });
+
+    poseNet1.on('pose', (results) => {
+        camPoses = results;
+    });
+
+    poseNet2.on('pose', (results) => {
+        refPoses = results;
+    });
+
+    ctx.fillStyle = '#FFFFFF';
+    setInterval(draw, 10);
+    setInterval(liveScore(refPoses, camPoses), 10)
 
 }
 
@@ -36,17 +49,10 @@ function startCamera() {
         .then(function (stream) {
           video.srcObject = stream;
         })
-        .catch(function (err0r) {
+        .catch(function (error) {
           console.log("Something went wrong!");
         });
     }
-
-	poseNet1.on('pose', (results) => {
-  		camPoses = results;
-	});
-
-	ctx.fillStyle = '#FFFFFF';
-	setInterval(draw, 10);
 }
 
 function drawLine(x1, y1, x2, y2, offset) {
@@ -135,8 +141,7 @@ function drawKeypoints(poses, offset) {
         const pose = poses[i].pose;
         for (let j = 0; j < pose.keypoints.length; j += 1) {
             const keypoint = pose.keypoints[j];
-            if (keypoint.score > 0.5) {
-                console.log(keypoint.position.x);
+            if (keypoint.score > threshold) {
                 if (offset > 0) {
                     ctx.fillRect(offset - keypoint.position.x-5, keypoint.position.y-5, 10, 10);
                 } else {
@@ -186,19 +191,23 @@ function leaveButton(name) {
 
 function play() {
 
-    poseNet2.on('pose', (results) => {
-        refPoses = results;
-    });
-
     document.getElementById('videoElement').play();
     document.getElementById('playButton').style.display = 'none';
     document.getElementById('pauseButton').style.display = 'block';
-
-    setInterval(draw, 10);
 }
 
 function pause() {
     document.getElementById('videoElement').pause();
     document.getElementById('playButton').style.display = 'block';
     document.getElementById('pauseButton').style.display = 'none';
+
+    referenceVideo = document.querySelector("#videoElement");
+}
+
+function liveScore(pose1, pose2) {
+    let score;
+    if(pose1 !== 'undefined'&& pose2 !== 'undefined') {
+        score=compare1(pose1, pose2);
+        document.getElementById('score').innerText = score;
+    }
 }
