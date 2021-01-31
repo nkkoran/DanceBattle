@@ -158,6 +158,9 @@ async function testy() {
 
 =======
     
+<<<<<<< HEAD
+>>>>>>> parent of 3515d72... Merge 1
+=======
 >>>>>>> parent of 3515d72... Merge 1
     let a = document.getElementById("AA_7.png");
     let jwa = await getJW(a);
