@@ -108,31 +108,23 @@ function dtw(jwl1, jwl2, comp) {
 }
 
 async function testy() {
-    // tl = ["A", "J", "T"];
-    // tn = ["1", "2", "3", "4"];
-    // testyy = [], hehe = [];
-    // for (let i = 0; i < tl.length; ++i) {
-    //     for (let j = 0; j < tn.length; ++j) {
-    //         testyy.push(tl[i] + tl[i] + "_" + tn[j] + ".png");
-    //     }
-    // }
-    // for (let i = 0; i < 10; ++i) {
-    //     let a = document.getElementById(testyy[i]);
-    //     let jw = await getJW(a);
-    //     hehe.push(jw);
-    // }
-    // jwl1 = hehe.slice(0, 5);
-    // jwl2 = hehe.slice(5, 10);
-    // let d = dtw(jwl1, jwl2, compare);
-    // console.log(d);
-    
-    let a = document.getElementById("AA_7.png");
-    let jwa = await getJW(a);
-    let b = document.getElementById("AA_8.png");
-    let jwb = await getJW(b);
-    console.log(jwa);
-    console.log(jwb);
-    console.log(compare2(jwa, jwb));
+    tl = ["A", "J", "T"];
+    tn = ["1", "2", "3", "4"];
+    testyy = [], hehe = [];
+    for (let i = 0; i < tl.length; ++i) {
+        for (let j = 0; j < tn.length; ++j) {
+            testyy.push(tl[i] + tl[i] + "_" + tn[j] + ".png");
+        }
+    }
+    for (let i = 0; i < 10; ++i) {
+        let a = document.getElementById(testyy[i]);
+        let jw = await getJW(a);
+        hehe.push(jw);
+    }
+    jwl1 = hehe.slice(0, 5);
+    jwl2 = hehe.slice(5, 10);
+    let d = dtw(jwl1, jwl2, compare);
+    console.log(d);
 }
 
 function partial(fn, j) {
