@@ -46,6 +46,7 @@ ul {
 li.mainBody {
     margin: 10px !important;
     box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.5);
+    background-color: rgb(158,207,241);
 
 }
 li.menu {

@@ -3,7 +3,9 @@ var ctx;
 var x;
 var poseNet;
 let camera;
+let referenceVideo;
 var camPoses;
+var refPoses;
 
 
 function init() {
@@ -11,7 +13,18 @@ function init() {
 	ctx = canvas.getContext("2d");
 	ctx.fillStyle = "#000000";
     //ctx.fillRect(0, 0, 300, 600);
+    referenceVideo = document.querySelector("#videoElement");
     camera = document.querySelector("#liveCamera");
+
+
+    poseNet1 = ml5.poseNet(camera, () => {
+        console.log('Model1 loaded');
+    });
+
+    poseNet2 = ml5.poseNet(referenceVideo, () => {
+        console.log('Model2 loaded');
+    });
+
 }
 
 function startCamera() {
@@ -28,11 +41,7 @@ function startCamera() {
         });
     }
 
-    poseNet = ml5.poseNet(video, () => {
-    	console.log('Model loaded');
-    });
-
-	poseNet.on('pose', (results) => {
+	poseNet1.on('pose', (results) => {
   		camPoses = results;
 	});
 
@@ -40,13 +49,115 @@ function startCamera() {
 	setInterval(draw, 10);
 }
 
+function drawLine(x1, y1, x2, y2, offset) {
+    ctx.beginPath();
+    if (offset > 0) {
+        ctx.moveTo(offset- x1,y1);
+        ctx.lineTo(offset - x2,y2);
+    } else {
+        ctx.moveTo(x1,y1);
+        ctx.lineTo(x2,y2);
+    }
+
+    ctx.stroke();
+}
+
 function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if(typeof refPoses !== 'undefined') {
+        drawKeypoints(refPoses, 0);
+        drawSkeleton(refPoses,0 );
+    }
+
 	if(typeof camPoses !== 'undefined') {
-		ctx.clearRect(0, 0, canvas.width, canvas.height);
-		ctx.fillRect(500-camPoses[0].pose.nose.x-5, camPoses[0].pose.nose.y-5, 10, 10);
+		/*
+		if (camPoses[0].pose.nose.confidence > confidenceLevel) {
+            ctx.fillRect(500-camPoses[0].pose.nose.x, camPoses[0].pose.nose.y, 10, 10);
+        }
+
+        if (camPoses[0].pose.leftShoulder.confidence > confidenceLevel) {
+            ctx.fillRect(500-camPoses[0].pose.leftShoulder.x, camPoses[0].pose.leftShoulder.y, 10, 10);
+        }
+
+        if (camPoses[0].pose.rightShoulder.confidence > confidenceLevel) {
+            ctx.fillRect(500-camPoses[0].pose.rightShoulder.x, camPoses[0].pose.rightShoulder.y, 10, 10);
+        }
+
+        if (camPoses[0].pose.leftElbow.confidence > confidenceLevel) {
+            ctx.fillRect(500-camPoses[0].pose.leftElbow.x, camPoses[0].pose.leftElbow.y, 10, 10);
+        }
+
+        if (camPoses[0].pose.rightElbow.confidence > confidenceLevel) {
+            ctx.fillRect(500-camPoses[0].pose.rightElbow.x, camPoses[0].pose.rightElbow.y, 10, 10);
+        }
+
+        if (camPoses[0].pose.leftWrist.confidence > confidenceLevel) {
+            ctx.fillRect(500-camPoses[0].pose.leftWrist.x, camPoses[0].pose.leftWrist.y, 10, 10);
+        }
+
+        if (camPoses[0].pose.rightWrist.confidence > confidenceLevel) {
+            ctx.fillRect(500-camPoses[0].pose.rightWrist.x, camPoses[0].pose.rightWrist.y, 10, 10);
+        }
+
+        if (camPoses[0].pose.leftHip.confidence > confidenceLevel) {
+            ctx.fillRect(500-camPoses[0].pose.leftHip.x, camPoses[0].pose.leftHip.y, 10, 10);
+        }
+
+        if (camPoses[0].pose.rightHip.confidence > confidenceLevel) {
+            ctx.fillRect(500-camPoses[0].pose.rightHip.x, camPoses[0].pose.rightHip.y, 10, 10);
+        }
+
+        //Lines
+        if (camPoses[0].pose.leftShoulder.confidence > confidenceLevel && camPoses[0].pose.rightShoulder.confidence > confidenceLevel) {
+            var midShoulder = [(camPoses[0].pose.rightShoulder.x + camPoses[0].pose.leftShoulder.x)/2, (camPoses[0].pose.rightShoulder.y + camPoses[0].pose.leftShoulder.y)/2];
+            drawLine(midShoulder[0],midShoulder[1],camPoses[0].pose.leftShoulder.x,camPoses[0].pose.leftShoulder.y);
+            drawLine(midShoulder[0],midShoulder[1],camPoses[0].pose.rightShoulder.x,camPoses[0].pose.rightShoulder.y);
+            if (camPoses[0].pose.nose.confidence > confidenceLevel) {
+                drawLine(midShoulder[0],midShoulder[1],camPoses[0].pose.nose.x,camPoses[0].pose.nose.y);
+            }
+        }
+
+        if (camPoses[0].pose.leftElbow.confidence > confidenceLevel && camPoses[0].pose.leftWrist.confidence > confidenceLevel) {
+            drawLine(camPoses[0].pose.leftElbow.x, camPoses[0].pose.leftElbow.y, camPoses[0].pose.leftWrist.x, camPoses[0].pose.leftWrist.y);
+        }
+
+        if (camPoses[0].pose.rightElbow.confidence > confidenceLevel && camPoses[0].pose.rightWrist.confidence > confidenceLevel) {
+            drawLine(camPoses[0].pose.rightElbow.x, camPoses[0].pose.rightElbow.y, camPoses[0].pose.rightWrist.x, camPoses[0].pose.rightWrist.y);
+        }
+        */
+        drawKeypoints(camPoses, 500);
+        drawSkeleton(camPoses, 500);
 	}
 }
 
+function drawKeypoints(poses, offset) {
+    for (let i = 0; i < poses.length; i += 1) {
+        const pose = poses[i].pose;
+        for (let j = 0; j < pose.keypoints.length; j += 1) {
+            const keypoint = pose.keypoints[j];
+            if (keypoint.score > 0.5) {
+                console.log(keypoint.position.x);
+                if (offset > 0) {
+                    ctx.fillRect(offset - keypoint.position.x-5, keypoint.position.y-5, 10, 10);
+                } else {
+                    ctx.fillRect(keypoint.position.x-5, keypoint.position.y-5, 10, 10);
+                }
+
+            }
+        }
+    }
+}
+
+function drawSkeleton(poses, offset) {
+    for (let i = 0; i < poses.length; i += 1) {
+        const skeleton = poses[i].skeleton;
+        for (let j = 0; j < skeleton.length; j += 1) {
+            const partA = skeleton[j][0];
+            const partB = skeleton[j][1];
+            drawLine(partA.position.x, partA.position.y, partB.position.x, partB.position.y, offset);
+        }
+    }
+}
 
 function stopCamera() {
       let video = camera;
@@ -74,9 +185,16 @@ function leaveButton(name) {
 }
 
 function play() {
+
+    poseNet2.on('pose', (results) => {
+        refPoses = results;
+    });
+
     document.getElementById('videoElement').play();
     document.getElementById('playButton').style.display = 'none';
     document.getElementById('pauseButton').style.display = 'block';
+
+    setInterval(draw, 10);
 }
 
 function pause() {
