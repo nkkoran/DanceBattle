@@ -1,5 +1,5 @@
 # TikTok Dance Trainer
-McHacks “Achievement Unlocked:” the most fun and creative game dev hack.
+McHacks 2021 “Achievement Unlocked:” the most fun and creative game dev hack.
 
 Learn to be the very best tik tokker of all.
 
