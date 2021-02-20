@@ -1,4 +1,6 @@
 # TikTok Dance Trainer
+McHacks “Achievement Unlocked:” the most fun and creative game dev hack.
+
 Learn to be the very best tik tokker of all.
 
 The main focus of our project is creating opportunities for people to interact virtually and pursue their interests while remaining active. We hoped to accomplish this through a medium that people are already interested in and providing them with a tool to take that interest to the next level. 
